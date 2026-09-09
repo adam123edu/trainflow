@@ -1,11 +1,10 @@
 package se.adam.trainflow.web;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import se.adam.trainflow.domain.Exercise;
 import se.adam.trainflow.service.ExerciseService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/exercises")
@@ -18,7 +17,16 @@ public class ExerciseController {
     }
 
     @PostMapping
-    public Exercise createExercise(@RequestBody CreateExerciseRequest request) {
-        return exerciseService.createExercise(request.name(), request.muscleGroup(), request.equipment(), request.difficulty());
+    public ExerciseResponse createExercise(@RequestBody CreateExerciseRequest request) {
+        Exercise exercise = exerciseService.createExercise(request.name(), request.muscleGroup(),
+                                                           request.equipment(), request.difficulty());
+        return ExerciseResponse.from(exercise);
+    }
+
+    @GetMapping
+    public List<ExerciseResponse> getAllExercises() {
+        return exerciseService.getAllExercises().stream()
+                .map(exercise -> ExerciseResponse.from(exercise))
+                .toList();
     }
 }

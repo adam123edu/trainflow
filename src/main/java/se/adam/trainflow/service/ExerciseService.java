@@ -3,6 +3,8 @@ package se.adam.trainflow.service;
 import org.springframework.stereotype.Service;
 import se.adam.trainflow.domain.*;
 
+import java.util.List;
+
 @Service
 public class ExerciseService {
 
@@ -17,5 +19,9 @@ public class ExerciseService {
         Exercise exercise = new Exercise(name, muscleGroup, equipment, difficulty);
         return repository.save(exercise);
 
+    }
+
+    public List<Exercise> getAllExercises() {
+        return repository.findAll();
     }
 }
